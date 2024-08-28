@@ -5,6 +5,13 @@ public class Course{
     private String Course_name;
     private int Credits;
 
+    public Course(int id, String name, int credits)
+    {
+        Course_id = id;
+        Course_name = name;
+        Credits = credits;
+    }
+    
     public int getCourseID()
     {
         return Course_id;

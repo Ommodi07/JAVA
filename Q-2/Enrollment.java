@@ -1,40 +1,62 @@
-package Enrollment_pack;
+package Course_pack;
 import Course_pack.Course;
 
 public class Enrollment {
     private int studentCourses[][];
     private int[] count;
 
-
-    public void enroll(int Student_id,int Course_id)
-    {
-        studentCourses[Student_id][count[Student_id]] = Course_id;
-        count[Student_id]++;
+    public Enrollment(int numStudents, int numCourses) {
+        studentCourses = new int[numStudents][numCourses];
+        count = new int[numStudents];
     }
-    public void drop(int Student_id,int Course_id)
+
+    public void enroll(int studentID, int courseID)
     {
-        for(int i=0;i<count[Student_id];i++)
+        if(count[studentID]<studentCourses[studentID].length)
         {
-            if(studentCourses[Student_id][i]==Course_id)
-            {
-                for(int j=i;j<count[Student_id]-1;j++)
-                {
-                    studentCourses[Student_id][j]=studentCourses[Student_id][j+1];
-                    count[Student_id]--;
-                    return;
-                }
-            }
+            studentCourses[studentID][count[studentID]++] = courseID;
+            System.out.println("Student " + studentID + " enrolled in Course " + courseID);
+        }
+        else
+        {
+            System.out.println("Student " + studentID + " cannot enroll in more courses.");
         }
     }
-    public void getEnrolledCourses(int Student_id,Course[] CourseCatalog)
+
+    public void drop(int studentID, int courseID)
     {
-        for(int i=0;i<count[Student_id];i++)
+        boolean found = false;
+        for(int i=0;i<count[studentID];i++)
         {
-            for(int j=0;j<CourseCatalog.length;j++)
+            if (studentCourses[studentID][i]==courseID)
             {
-                if(studentCourses[Student_id][i]==CourseCatalog[j].getCourseID())
+                found = true;
+                for(int j=i;j<count[studentID]-1;j++)
                 {
-                    System.out.println(CourseCatalog[j].getCourseName());
+                    studentCourses[studentID][j] = studentCourses[studentID][j+1];
+                }
+                count[studentID]--;
+                System.out.println("Student " + studentID + " dropped Course " + courseID);
+                break;
+            }
+        }
+        if(!found)
+        {
+            System.out.println("Course " + courseID + " not found for Student " + studentID);
+        }
+    }
+    
+    public void getEnrolledCourses(int studentID, Course[] courseCatalog)
+    {
+        System.out.println("Enrolled courses for Student " + studentID + ":");
+        for(int i=0;i<count[studentID];i++)
+        {
+            int courseID = studentCourses[studentID][i];
+            for(Course course : courseCatalog)
+            {
+                if(course.getCourseID()==courseID)
+                {
+                    System.out.println(course);
                 }
             }
         }
